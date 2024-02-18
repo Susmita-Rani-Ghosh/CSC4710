@@ -16,7 +16,11 @@ export default function Authors() {
           description="Hello, I'm Susmita, a third-year Computer Science student with a Statistics Minor. I'm eager to be actively involved in developing and implementing key features for this project."
           image="/img/susmita.jpg"
         />
-        <Card title="Author 3" description="Description 3" />
+        <Card
+          title="Mohammad Azadegan"
+          description="I am a senior at Wayne State University, majoring in Computer Science with a minor in Statistics. I have a strong passion for engaging in software development projects. Additionally, I am currently a co-op at American Axle Manufacturing in the Data Analytics and Development Department."
+          image="/img/mohammad.jpg"
+        />
         <Card title="Author 4" description="Description 4" />
       </div>
     </div>
