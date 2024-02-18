@@ -1,0 +1,9 @@
+# This requires the experimental runtimes for nodejsv18+
+
+v: 0
+micros:
+  - name: nextjs-app
+    src: .
+    engine: next
+    primary: true
+    public: true
