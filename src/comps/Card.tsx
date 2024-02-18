@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
+
 interface CardProps {
   title: string;
   description: string;
@@ -5,13 +8,28 @@ interface CardProps {
 }
 
 export default function Card(props: CardProps) {
+  const CardImage = () => {
+    const defaultImgSrc = "https://via.placeholder.com/300";
+    const imgClass = "h-64 w-full object-cover object-center";
+    if (!props.image) {
+      return <img src={defaultImgSrc} alt={props.title} className={imgClass} />;
+    }
+    if (props.image.startsWith("http")) {
+      return <img className={imgClass} src={props.image} alt={props.title} />;
+    }
+    return (
+      <Image
+        className="h-64 w-full object-cover object-center"
+        src={props.image}
+        alt={props.title}
+        width={300}
+        height={300}
+      />
+    );
+  };
   return (
     <div className="w-[350px] overflow-hidden rounded bg-slate-200 text-black shadow-lg">
-      <img
-        className="h-64 w-full object-cover object-center"
-        src={props.image ?? "https://via.placeholder.com/300"}
-        alt={props.title}
-      />
+      <CardImage />
       <div className="px-6 py-4">
         <div className="mb-2 text-xl font-bold text-black">{props.title}</div>
         <p className="text-base text-gray-700">{props.description}</p>
