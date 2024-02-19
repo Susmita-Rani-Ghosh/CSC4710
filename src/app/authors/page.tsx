@@ -8,7 +8,7 @@ export default function Authors() {
       <div className="flex flex-wrap gap-4">
         <Card
           title="Zavaar Shah"
-          description="I'm a student at Wayne State University. I am currently studying Computer Science am in my third year. I am passionate about software development and always looking to learn new things."
+          description="I'm a student at Wayne State University. I am currently studying Computer Science in my third-year. I am passionate about software development and always looking to learn new things."
           image="https://showcase.zavaar.net/pics/me_3_prof_bg_2.jpg"
         />
         <Card
