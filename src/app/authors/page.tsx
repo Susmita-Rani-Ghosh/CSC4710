@@ -21,7 +21,11 @@ export default function Authors() {
           description="I am a senior at Wayne State University, majoring in Computer Science with a minor in Statistics. I have a strong passion for engaging in software development projects. Additionally, I am currently a co-op at American Axle Manufacturing in the Data Analytics and Development Department."
           image="/img/mohammad.jpg"
         />
-        <Card title="Author 4" description="Description 4" />
+        <Card
+          title="Nathan Race"
+          description="Hi I'm Nathan, a Senior at Wayne State University studying Computer Science and Mathematics. I'm also very passionate about improving accessibility in digital design!"
+          image="/img/nathan.jpg"
+        />
       </div>
     </div>
   );
