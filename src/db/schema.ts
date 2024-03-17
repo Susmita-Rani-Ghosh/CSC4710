@@ -1,12 +1,14 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   char,
   integer,
+  pgEnum,
   pgTable,
   serial,
   text,
   timestamp,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const category = pgTable("category", {
@@ -25,3 +27,10 @@ export const tasks = pgTable("tasks", {
     .default("active")
     .notNull(),
 });
+
+export const taskRelations = relations(tasks, ({ one }) => ({
+  category: one(category, {
+    fields: [tasks.categoryId],
+    references: [category.id],
+  }),
+}));
