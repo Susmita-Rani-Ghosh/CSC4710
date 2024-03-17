@@ -1,7 +1,8 @@
 import "@/styles/globals.css";
-import Head from "next/head";
 import { Inter } from "next/font/google";
 import Nav from "@/comps/Nav";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,8 +23,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans ${inter.variable} px-none bg-[#1c1c1c] text-white sm:px-6`}
+        className={`font-sans ${inter.variable} px-none min-h-screen bg-[#1c1c1c] text-white sm:px-6`}
       >
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <Nav />
         <div className="mt-4 px-2 sm:px-8">{children}</div>
       </body>
