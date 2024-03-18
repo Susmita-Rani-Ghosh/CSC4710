@@ -101,14 +101,14 @@ export default function CreateTask(props: CreateTaskProps) {
                         data = await edit({
                           id: props.id,
                           description,
-                          dueDate: dueDate.toISOString(),
+                          dueDate,
                           priorityLevel: priority,
                           status,
                         });
                       } else {
                         data = await create({
                           description,
-                          dueDate: dueDate.toISOString(),
+                          dueDate,
                           priorityLevel: priority,
                         });
                       }

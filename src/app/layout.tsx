@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Nav from "@/comps/Nav";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Boundary from "@/comps/Boundary";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,8 +33,10 @@ export default function RootLayout({
           pauseOnHover
           theme="dark"
         />
-        <Nav />
-        <div className="mt-4 px-2 sm:px-8">{children}</div>
+        <Boundary>
+          <Nav />
+          <div className="mt-4 px-2 sm:px-8">{children}</div>
+        </Boundary>
       </body>
     </html>
   );

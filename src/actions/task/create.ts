@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 
 interface CreateTask {
   description: string;
-  dueDate: string;
+  dueDate: Date;
   priorityLevel: number;
 }
 
@@ -20,7 +20,7 @@ export default async function create({
     await db.insert(tasks).values({
       // @ts-expect-error weird ts issue
       description,
-      dueDate: dueDate,
+      dueDate: dueDate as unknown as string,
       priorityLevel,
       status: "active",
     });

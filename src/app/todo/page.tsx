@@ -1,17 +1,20 @@
 import CreateTask from "@/comps/CreateTask";
 import TaskCard from "@/comps/TaskCard";
 import { db } from "@/db";
-import { tasks } from "@/db/schema";
 
 export default async function page() {
-  const tasks = await db.query.tasks.findMany({
+  const allTasks = await db.query.tasks.findMany({
+    where: (tasks, { gt }) => gt(tasks.dueDate, new Date()),
     orderBy: (tasks, { asc }) => [asc(tasks.priorityLevel)],
+    with: {
+      category: true,
+    },
   });
   return (
     <div>
       <h1>Tasks</h1>
-      <div className="grid auto-cols-max grid-flow-col">
-        {tasks.map((task) => (
+      <div className="mb-4 flex flex-wrap gap-2">
+        {allTasks.map((task) => (
           <TaskCard
             key={task.id}
             id={task.id}
@@ -19,6 +22,7 @@ export default async function page() {
             dueDate={task.dueDate}
             priorityLevel={task.priorityLevel?.toString()}
             status={task.status}
+            category={task.category?.name}
           />
         ))}
       </div>

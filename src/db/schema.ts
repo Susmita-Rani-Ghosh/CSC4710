@@ -2,6 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   char,
+  date,
   integer,
   pgEnum,
   pgTable,
@@ -19,8 +20,8 @@ export const category = pgTable("category", {
 export const tasks = pgTable("tasks", {
   id: serial("id").primaryKey().unique().notNull(),
   description: text("description").notNull(),
-  dueDate: timestamp("due_date", { withTimezone: true }).notNull(),
-  categoryId: integer("category_id").references(() => category.id),
+  dueDate: date("due_date", { mode: "date" }).notNull(),
+  category: integer("category").references(() => category.id),
   // from 1-4
   priorityLevel: char("priority_level", { enum: ["1", "2", "3", "4"] }),
   status: text("status", { enum: ["completed", "active"] })
@@ -30,7 +31,7 @@ export const tasks = pgTable("tasks", {
 
 export const taskRelations = relations(tasks, ({ one }) => ({
   category: one(category, {
-    fields: [tasks.categoryId],
+    fields: [tasks.category],
     references: [category.id],
   }),
 }));
