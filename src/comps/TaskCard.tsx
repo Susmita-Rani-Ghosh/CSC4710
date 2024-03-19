@@ -5,11 +5,9 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Link,
-  Image,
   Chip,
 } from "@nextui-org/react";
-import CreateTask from "./CreateTask";
+import TaskModal from "./TaskModal";
 import { BsBellFill } from "react-icons/bs";
 
 interface TaskCardProps {
@@ -26,7 +24,7 @@ export default function TaskCard(props: TaskCardProps) {
     <Card className=" min-w-[300px] md:max-w-[400px]">
       <CardHeader className="flex gap-3">
         <div className="flex flex-col gap-3">
-          <CreateTask
+          <TaskModal
             id={props.id}
             description={props.description}
             dueDate={props.dueDate}

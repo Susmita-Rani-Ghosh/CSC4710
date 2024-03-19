@@ -18,6 +18,11 @@ export default function Nav() {
           TODOs
         </Link>
       </li>
+      <li className="mr-6">
+        <Link className="text-blue-200 hover:text-blue-500" href="/category">
+          Categories
+        </Link>
+      </li>
     </ul>
   );
 }

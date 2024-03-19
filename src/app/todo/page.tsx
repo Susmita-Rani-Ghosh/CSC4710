@@ -1,4 +1,4 @@
-import CreateTask from "@/comps/CreateTask";
+import TaskModal from "@/comps/TaskModal";
 import TaskCard from "@/comps/TaskCard";
 import { db } from "@/db";
 
@@ -26,7 +26,7 @@ export default async function page() {
           />
         ))}
       </div>
-      <CreateTask />
+      <TaskModal />
     </div>
   );
 }

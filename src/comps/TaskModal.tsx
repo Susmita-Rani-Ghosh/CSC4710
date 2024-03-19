@@ -17,7 +17,7 @@ import edit from "@/actions/task/edit";
 
 type Status = "completed" | "active";
 
-interface CreateTaskProps {
+interface TaskModalProps {
   id?: number;
   status?: Status;
   dueDate?: Date;
@@ -25,7 +25,7 @@ interface CreateTaskProps {
   description?: string;
 }
 
-export default function CreateTask(props: CreateTaskProps) {
+export default function TaskModal(props: TaskModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [priorityLevel, setPriorityLevel] = React.useState(
     props.priorityLevel ?? 1,
