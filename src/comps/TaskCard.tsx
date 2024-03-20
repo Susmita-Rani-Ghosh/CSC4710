@@ -64,8 +64,7 @@ export default function TaskCard(props: TaskCardProps) {
       </CardBody>
       <Divider />
       <CardFooter>
-        <b>Due</b>:{" "}
-        {moment(props.dueDate).add(1, "day").toDate().toDateString()}
+        <b>Due</b>: {moment(props.dueDate).toDate().toDateString()}
       </CardFooter>
     </Card>
   );

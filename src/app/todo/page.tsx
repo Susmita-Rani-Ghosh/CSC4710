@@ -6,22 +6,27 @@ export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
 export default async function page() {
+  const now = new Date(
+    new Date().toLocaleString("en-US", {
+      timeZone: "America/New_York",
+    }),
+  );
   const dueToday = await db.query.tasks.findMany({
-    where: (tasks, { eq }) => eq(tasks.dueDate, new Date()),
+    where: (tasks, { eq }) => eq(tasks.dueDate, now),
     orderBy: (tasks, { asc }) => [asc(tasks.priorityLevel)],
     with: {
       category: true,
     },
   });
   const dueTasks = await db.query.tasks.findMany({
-    where: (tasks, { gt }) => gt(tasks.dueDate, new Date()),
+    where: (tasks, { gt }) => gt(tasks.dueDate, now),
     orderBy: (tasks, { asc }) => [asc(tasks.priorityLevel)],
     with: {
       category: true,
     },
   });
   const overdueTasks = await db.query.tasks.findMany({
-    where: (tasks, { lt }) => lt(tasks.dueDate, new Date()),
+    where: (tasks, { lt }) => lt(tasks.dueDate, now),
     orderBy: (tasks, { asc }) => [asc(tasks.priorityLevel)],
     with: {
       category: true,
