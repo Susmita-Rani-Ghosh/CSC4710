@@ -21,7 +21,9 @@ export const tasks = pgTable("tasks", {
   id: serial("id").primaryKey().unique().notNull(),
   description: text("description").notNull(),
   dueDate: date("due_date", { mode: "date" }).notNull(),
-  category: integer("category").references(() => category.id),
+  category: integer("category").references(() => category.id, {
+    onDelete: "cascade",
+  }),
   // from 1-4
   priorityLevel: char("priority_level", { enum: ["1", "2", "3", "4"] }),
   status: text("status", { enum: ["completed", "active"] })

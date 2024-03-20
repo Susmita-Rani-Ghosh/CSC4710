@@ -1,7 +1,9 @@
 "use client";
 import create from "@/actions/category/create";
+import edit from "@/actions/category/edit";
 import { Button, Input } from "@nextui-org/react";
 import React from "react";
+import { BsPlus } from "react-icons/bs";
 import { toast } from "react-toastify";
 
 interface CategoriesProps {
@@ -15,30 +17,50 @@ export default function Categories({ categories }: CategoriesProps) {
   >({});
   const handleNewCategory = async () => {
     const name = newRef.current?.value;
-    if (name) {
-      const notif = toast.loading("Saving category...");
-      try {
-        const data = await create({ name });
-        toast.update(notif, {
-          render: data.msg,
-          type: "success",
-          isLoading: false,
-          autoClose: 5000,
-        });
-      } catch (e) {
-        const err = e as Error;
-        toast.update(notif, {
-          render: err.message,
-          type: "error",
-          isLoading: false,
-          autoClose: 8000,
-        });
-      }
+
+    const notif = toast.loading("Saving category...");
+    try {
+      if (!name) throw new Error("Category name is required");
+      const data = await create({ name });
+      toast.update(notif, {
+        render: data.msg,
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    } catch (e) {
+      const err = e as Error;
+      toast.update(notif, {
+        render: err.message,
+        type: "error",
+        isLoading: false,
+        draggable: true,
+        autoClose: 8000,
+      });
     }
   };
-  const handleEditCategory = (id: number) => () => {
-    console.log("Edit category", id, categoryInputs[id]);
-    // TODO: create this action
+  const handleEditCategory = (id: number) => async () => {
+    const name = categoryInputs[id];
+    const notif = toast.loading("Saving category...");
+    try {
+      if (!name) throw new Error("Category name is required");
+      const data = await edit({ id, name });
+      toast.update(notif, {
+        render: data.msg,
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    } catch (e) {
+      const err = e as Error;
+      toast.update(notif, {
+        render: err.message,
+        type: "error",
+        isLoading: false,
+        draggable: true,
+        autoClose: 8000,
+      });
+    }
   };
   return (
     <div>
@@ -55,18 +77,27 @@ export default function Categories({ categories }: CategoriesProps) {
             }}
             defaultValue={category.name}
           />
-          <Button onClick={handleEditCategory(category.id)} className="w-[10%]">
+          <Button
+            onClick={handleEditCategory(category.id)}
+            color="primary"
+            className="w-[10%]"
+          >
             Save
           </Button>
         </div>
       ))}
+      <hr className="my-2 rounded-md border border-gray-700" />
       <Input
         ref={newRef}
-        className="w-[90%]"
+        color="primary"
+        className="w-full"
         placeholder="Create new category..."
       />
-      <Button onClick={handleNewCategory} className="w-[10%]">
-        Add
+      <Button
+        onClick={handleNewCategory}
+        className="w-full bg-blue-600 text-white"
+      >
+        <BsPlus /> Add
       </Button>
     </div>
   );

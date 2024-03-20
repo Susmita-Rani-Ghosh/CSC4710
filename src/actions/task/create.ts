@@ -17,6 +17,9 @@ export default async function create({
   priorityLevel,
 }: CreateTask): Promise<ActionResponse> {
   try {
+    if (!description) {
+      throw new Error("Description is required");
+    }
     await db.insert(tasks).values({
       // @ts-expect-error weird ts issue
       description,
