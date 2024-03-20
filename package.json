@@ -1,7 +1,7 @@
 {
   "name": "CSC4710",
   "version": "0.1.0",
-  "url": "https://csc4710-1-j8939987.deta.app",
+  "url": "https://csc4710.netlify.app",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "lint": "next lint",
     "start": "next start",
     "db:generate": "drizzle-kit generate:pg --schema ./src/db/schema.ts --out ./src/db/drizzle",
-    "db:migrate": "npx tsx -r dotenv/config  ./src/db/migrate.ts",
+    "db:migrate": "npx tsx -r dotenv/config ./src/db/migrate.ts",
     "deploy": "space push --runner-version experimental"
   },
   "dependencies": {

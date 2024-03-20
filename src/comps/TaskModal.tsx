@@ -72,7 +72,10 @@ export default function TaskModal(props: TaskModalProps) {
                   />
                   <Input
                     onChange={(e) => setDueDate(new Date(e.target.value))}
-                    value={dueDate.toLocaleDateString("en-CA")}
+                    value={moment(dueDate)
+                      .add(1, "days")
+                      .toDate()
+                      .toLocaleDateString("en-CA")}
                     type="date"
                     label="Due Date"
                   />

@@ -12,6 +12,7 @@ import { BsBellFill, BsHash } from "react-icons/bs";
 import { type Status } from "@/types/Status";
 import { type InferSelectModel } from "drizzle-orm";
 import { type category } from "@/db/schema";
+import moment from "moment";
 interface TaskCardProps {
   id: number;
   description: string;
@@ -63,7 +64,8 @@ export default function TaskCard(props: TaskCardProps) {
       </CardBody>
       <Divider />
       <CardFooter>
-        <b>Due</b>: {props.dueDate.toDateString()}
+        <b>Due</b>:{" "}
+        {moment(props.dueDate).add(1, "day").toDate().toDateString()}
       </CardFooter>
     </Card>
   );
