@@ -17,6 +17,7 @@ export default async function edit({ id, name }: EditCategory) {
     }
     await db.update(category).set({ name }).where(eq(category.id, id));
     revalidatePath("/category");
+    revalidatePath("/todo");
     return { msg: "Category saved." };
   } catch (e: unknown) {
     const error = e as Error;

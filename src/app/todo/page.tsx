@@ -10,6 +10,7 @@ export default async function page() {
       category: true,
     },
   });
+  const allCategories = await db.query.category.findMany({});
   return (
     <div>
       <h1>Tasks</h1>
@@ -23,10 +24,11 @@ export default async function page() {
             priorityLevel={task.priorityLevel?.toString()}
             status={task.status}
             category={task.category?.name}
+            categories={allCategories}
           />
         ))}
       </div>
-      <TaskModal />
+      <TaskModal categories={allCategories} />
     </div>
   );
 }

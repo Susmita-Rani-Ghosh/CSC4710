@@ -12,6 +12,7 @@ interface EditTask {
   dueDate: Date;
   status: "completed" | "active";
   priorityLevel: number;
+  category?: number;
 }
 
 export default async function edit({
@@ -20,6 +21,7 @@ export default async function edit({
   dueDate,
   priorityLevel,
   status,
+  category,
 }: EditTask): Promise<ActionResponse> {
   try {
     if (!id) {
@@ -35,6 +37,7 @@ export default async function edit({
         dueDate,
         priorityLevel: priorityLevel.toString() as "1" | "2" | "3" | "4",
         status,
+        category: category == 0 ? null : category,
       })
       .where(eq(tasks.id, id));
     revalidatePath("/todo");

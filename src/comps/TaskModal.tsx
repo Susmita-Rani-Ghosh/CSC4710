@@ -9,20 +9,24 @@ import {
   Button,
   useDisclosure,
   Input,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 import moment from "moment";
 import create from "@/actions/task/create";
 import { toast } from "react-toastify";
 import edit from "@/actions/task/edit";
-
-type Status = "completed" | "active";
-
+import { type Status } from "@/types/Status";
+import { type InferSelectModel } from "drizzle-orm";
+import { type category } from "@/db/schema";
 interface TaskModalProps {
   id?: number;
   status?: Status;
   dueDate?: Date;
   priorityLevel?: number;
   description?: string;
+  category?: string;
+  categories: InferSelectModel<typeof category>[];
 }
 
 export default function TaskModal(props: TaskModalProps) {
@@ -36,12 +40,18 @@ export default function TaskModal(props: TaskModalProps) {
   const [description, setDescription] = React.useState<string>(
     props.description ?? "",
   );
-  const [status, setStatus] = React.useState<Status>(props.status ?? "active");
+  const statuses: Array<Status> = ["active", "completed"];
+  const [status, setStatus] = React.useState<Status>(
+    props.status ?? statuses[0]!,
+  );
   const priority = React.useMemo(() => 4 - priorityLevel + 1, [priorityLevel]);
   const isEdit = React.useMemo(() => Boolean(props.id), [props]);
   const title = React.useMemo(
     () => (isEdit ? "Edit Task" : "Create Task"),
     [isEdit],
+  );
+  const [category, setCategory] = React.useState<number>(
+    props.categories.find((c) => c.name === props.category)?.id ?? 0,
   );
   return (
     <>
@@ -75,13 +85,36 @@ export default function TaskModal(props: TaskModalProps) {
                     onChange={(e) => setPriorityLevel(Number(e.target.value))}
                     label={`Priority Level: ${priority}`}
                   />
-                  <select
+                  <Select
+                    label="Status"
                     onChange={(e) => setStatus(e.target.value as Status)}
-                    className="rounded-xl bg-gray-200 p-4 text-gray-700"
+                    defaultSelectedKeys={[status]}
+                    items={statuses}
+                    className="text-black"
                   >
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
-                  </select>
+                    {statuses.map((s) => (
+                      <SelectItem className="text-black" key={s} value={s}>
+                        {s}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                  <Select
+                    label="Category"
+                    defaultSelectedKeys={[props.category! ?? "None"]}
+                    onChange={(e) => setCategory(Number(e.target.value))}
+                    items={props.categories.map((c) => c.name)}
+                    className="text-black"
+                  >
+                    {[{ id: 0, name: "None" }, ...props.categories].map((c) => (
+                      <SelectItem
+                        className="text-black"
+                        key={c.id}
+                        value={c.name}
+                      >
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </Select>
                 </div>
               </ModalBody>
               <ModalFooter>
@@ -96,18 +129,22 @@ export default function TaskModal(props: TaskModalProps) {
                       let data;
                       if (isEdit) {
                         if (!props.id) throw new Error("Task id is required");
+                        console.log(category, props.category);
                         data = await edit({
                           id: props.id,
                           description,
                           dueDate,
                           priorityLevel: priority,
                           status,
+                          category,
                         });
                       } else {
                         data = await create({
                           description,
                           dueDate,
                           priorityLevel: priority,
+                          status,
+                          category,
                         });
                       }
                       if (data.error) throw new Error(data.error);
