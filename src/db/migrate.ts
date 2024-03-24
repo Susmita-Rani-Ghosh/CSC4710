@@ -1,10 +1,9 @@
-import { migrate } from "drizzle-orm/neon-http/migrator";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import postgres from "postgres";
 const dburl = process.env.DB_URL!;
 if (!dburl) throw new Error("DB_URL env var is not set");
-const sql = neon(dburl);
-// @ts-expect-error weird lib type error
+const sql = postgres(dburl);
 const db = drizzle(sql);
 
 const main = async () => {
@@ -15,4 +14,9 @@ const main = async () => {
   console.log("Database migrated!");
 };
 
-await main();
+main()
+  .then(() => process.exit(0))
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
