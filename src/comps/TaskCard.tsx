@@ -6,13 +6,15 @@ import {
   CardFooter,
   Divider,
   Chip,
+  Link,
 } from "@nextui-org/react";
 import TaskModal from "./TaskModal";
-import { BsBellFill, BsHash } from "react-icons/bs";
+import { BsBellFill, BsHash, BsClockFill } from "react-icons/bs";
 import { type Status } from "@/types/Status";
 import { type InferSelectModel } from "drizzle-orm";
 import { type category } from "@/db/schema";
 import moment from "moment";
+import { set } from "zod";
 interface TaskCardProps {
   id: number;
   description: string;
@@ -24,6 +26,7 @@ interface TaskCardProps {
 }
 
 export default function TaskCard(props: TaskCardProps) {
+
   return (
     <Card className=" min-w-[300px] md:max-w-[400px]">
       <CardHeader className="flex gap-3">
@@ -46,6 +49,7 @@ export default function TaskCard(props: TaskCardProps) {
             Priority: <span className="font-bold">{props.priorityLevel}</span>
           </Chip>
           {props?.category && (
+            
             <Chip
               startContent={<BsHash size={18} />}
               color="primary"
@@ -54,6 +58,7 @@ export default function TaskCard(props: TaskCardProps) {
             >
               {props?.category}
             </Chip>
+            
           )}
           <div className="flex gap-1"></div>
         </div>
@@ -65,6 +70,21 @@ export default function TaskCard(props: TaskCardProps) {
       <Divider />
       <CardFooter>
         <b>Due</b>: {moment(props.dueDate).toDate().toDateString()}
+        <Chip
+          startContent={<BsClockFill size={18} />}
+          color="success"
+          variant="flat"
+          className="p-2 py-5"
+        >
+          {!moment(props.dueDate).fromNow().includes("minute") && !moment(props.dueDate).fromNow().includes("hour") ? (
+            
+            moment(props.dueDate).fromNow()
+          ) : (
+            <Link color href="#">
+              {moment(props.dueDate).fromNow()}
+            </Link>
+          )}
+        </Chip>
       </CardFooter>
     </Card>
   );
