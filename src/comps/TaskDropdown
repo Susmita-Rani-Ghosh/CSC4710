@@ -1,0 +1,33 @@
+import { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { db } from '../db';
+
+const TaskDropdown = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const allCategories = await db.query.category.findMany({});
+      setCategories(allCategories.map(category => ({
+        value: category.id,
+        label: category.name,
+      })));
+    };
+
+    fetchCategories();
+  }, []);
+
+  return (
+    <Select
+      options={categories}
+      placeholder="Select a category"
+      // Handle onChange event
+      onChange={(selectedOption) => {
+        console.log(selectedOption);
+        // Perform any actions based on the selected category
+      }}
+    />
+  );
+};
+
+export default TaskDropdown;

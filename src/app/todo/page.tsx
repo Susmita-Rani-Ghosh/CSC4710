@@ -1,11 +1,13 @@
 import TaskModal from "@/comps/TaskModal";
 import TaskCard from "@/comps/TaskCard";
+import TaskDropdown from "@/comps/TaskDropdown"; // Import TaskDropdown component
 import { db } from "@/db";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
 export default async function page() {
+
   const now = new Date(
     new Date().toLocaleString("en-US", {
       timeZone: "America/New_York",
@@ -33,8 +35,16 @@ export default async function page() {
     },
   });
   const allCategories = await db.query.category.findMany({});
+
+  overdueTasks.sort((a, b) => {
+    return a.dueDate < b.dueDate ? -1 : 1;
+  });
+
   return (
     <div>
+      {/* Add TaskDropdown component */}
+      <TaskDropdown />
+      
       <h1>Due today</h1>
       <div className="mb-4 flex flex-wrap gap-2">
         {dueToday.length > 0
