@@ -11,12 +11,21 @@ interface TodoPage {
 }
 
 export default async function page({ searchParams }: TodoPage) {
+  const dateParams = searchParams?.date;
   const now = new Date(
     new Date().toLocaleString("en-US", {
       timeZone: "America/New_York",
     }),
   );
 
+  if (dateParams) {
+    if (isNaN(new Date(dateParams).getDate())) {
+      return <h1>Invalid date</h1>;
+    }
+    now.setDate(new Date(dateParams).getDate());
+    now.setMonth(new Date(dateParams).getMonth());
+    now.setFullYear(new Date(dateParams).getFullYear());
+  }
   const category = searchParams?.category;
   let dueToday, dueTasks, overdueTasks;
   if (!category || category === "-1") {
