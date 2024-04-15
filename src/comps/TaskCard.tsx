@@ -9,7 +9,14 @@ import {
   Link,
 } from "@nextui-org/react";
 import TaskModal from "./TaskModal";
-import { BsBellFill, BsHash, BsClockFill } from "react-icons/bs";
+import {
+  BsBellFill,
+  BsHash,
+  BsClockFill,
+  BsStarFill,
+  BsCheck,
+  BsX,
+} from "react-icons/bs";
 import { type Status } from "@/types/Status";
 import { type InferSelectModel } from "drizzle-orm";
 import { type category } from "@/db/schema";
@@ -23,12 +30,15 @@ interface TaskCardProps {
   priorityLevel?: string;
   status: Status;
   categories: InferSelectModel<typeof category>[];
+  className?: string;
 }
 
 export default function TaskCard(props: TaskCardProps) {
-
+  const isCompleted = props.status === "completed";
   return (
-    <Card className=" min-w-[300px] md:max-w-[400px]">
+    <Card
+      className={`min-w-[300px] md:max-w-[400px] ${isCompleted && "bg-green-200"} ${props.className}`}
+    >
       <CardHeader className="flex gap-3">
         <div className="flex gap-3">
           <TaskModal
@@ -49,7 +59,6 @@ export default function TaskCard(props: TaskCardProps) {
             Priority: <span className="font-bold">{props.priorityLevel}</span>
           </Chip>
           {props?.category && (
-            
             <Chip
               startContent={<BsHash size={18} />}
               color="primary"
@@ -58,7 +67,6 @@ export default function TaskCard(props: TaskCardProps) {
             >
               {props?.category}
             </Chip>
-            
           )}
           <div className="flex gap-1"></div>
         </div>
@@ -76,14 +84,20 @@ export default function TaskCard(props: TaskCardProps) {
           variant="flat"
           className="p-2 py-5"
         >
-          {!moment(props.dueDate).fromNow().includes("minute") && !moment(props.dueDate).fromNow().includes("hour") ? (
-            
+          {!moment(props.dueDate).fromNow().includes("minute") &&
+          !moment(props.dueDate).fromNow().includes("hour") ? (
             moment(props.dueDate).fromNow()
           ) : (
-            <Link color href="#">
-              {moment(props.dueDate).fromNow()}
-            </Link>
+            <Link href="#">{moment(props.dueDate).fromNow()}</Link>
           )}
+        </Chip>
+        <Chip
+          startContent={isCompleted ? <BsCheck size={18} /> : <BsX size={18} />}
+          color="warning"
+          variant="flat"
+          className="p-2 py-5"
+        >
+          {isCompleted ? "Completed" : "Active"}
         </Chip>
       </CardFooter>
     </Card>
