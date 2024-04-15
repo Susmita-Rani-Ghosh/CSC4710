@@ -75,7 +75,7 @@ export default function TaskModal(props: TaskModalProps) {
                     value={moment(dueDate)
                       .add(1, "days")
                       .toDate()
-                      .toLocaleDateString("en-CA")}
+                      .toLocaleDateString("en-US")}
                     type="date"
                     label="Due Date"
                   />

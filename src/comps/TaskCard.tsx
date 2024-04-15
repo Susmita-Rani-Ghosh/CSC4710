@@ -6,13 +6,22 @@ import {
   CardFooter,
   Divider,
   Chip,
+  Link,
 } from "@nextui-org/react";
 import TaskModal from "./TaskModal";
-import { BsBellFill, BsHash } from "react-icons/bs";
+import {
+  BsBellFill,
+  BsHash,
+  BsClockFill,
+  BsStarFill,
+  BsCheck,
+  BsX,
+} from "react-icons/bs";
 import { type Status } from "@/types/Status";
 import { type InferSelectModel } from "drizzle-orm";
 import { type category } from "@/db/schema";
 import moment from "moment";
+import { set } from "zod";
 interface TaskCardProps {
   id: number;
   description: string;
@@ -21,11 +30,15 @@ interface TaskCardProps {
   priorityLevel?: string;
   status: Status;
   categories: InferSelectModel<typeof category>[];
+  className?: string;
 }
 
 export default function TaskCard(props: TaskCardProps) {
+  const isCompleted = props.status === "completed";
   return (
-    <Card className=" min-w-[300px] md:max-w-[400px]">
+    <Card
+      className={`min-w-[300px] md:max-w-[400px] ${isCompleted && "bg-green-200"} ${props.className}`}
+    >
       <CardHeader className="flex gap-3">
         <div className="flex gap-3">
           <TaskModal
@@ -65,6 +78,27 @@ export default function TaskCard(props: TaskCardProps) {
       <Divider />
       <CardFooter>
         <b>Due</b>: {moment(props.dueDate).toDate().toDateString()}
+        <Chip
+          startContent={<BsClockFill size={18} />}
+          color="success"
+          variant="flat"
+          className="p-2 py-5"
+        >
+          {!moment(props.dueDate).fromNow().includes("minute") &&
+          !moment(props.dueDate).fromNow().includes("hour") ? (
+            moment(props.dueDate).fromNow()
+          ) : (
+            <Link href="#">{moment(props.dueDate).fromNow()}</Link>
+          )}
+        </Chip>
+        <Chip
+          startContent={isCompleted ? <BsCheck size={18} /> : <BsX size={18} />}
+          color="warning"
+          variant="flat"
+          className="p-2 py-5"
+        >
+          {isCompleted ? "Completed" : "Active"}
+        </Chip>
       </CardFooter>
     </Card>
   );
